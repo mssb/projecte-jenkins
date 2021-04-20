@@ -4,7 +4,7 @@
 
 ![Jenkins photo](images/Jenkins.png)
 
-**Autores:**  Christian Manalo i Mark Santiago
+**Autores:**  Christian Manalo i Mark Santiago <br/>
 **Curso:** Administración de sistemas informáticos en redes
 
 <hr/>
@@ -12,7 +12,7 @@
 # Índice
 
 - **[Estudio inicial](#estudio-inicial)**
-- **[Análisis del sistema y conceptos](#Análisis-del-sistema-y-conceptos)**
+- **[Análisis del sistema y conceptos](#análisis-del-sistema-y-conceptos)**
 - **[Diseño del sistema](#diseño-del-sistema)**
 - **[Desarrollo](#desarrollo)**
 - **[Implantación](#implantación)**
@@ -22,7 +22,7 @@
 
 ## Estudio inicial
 
-## Análisis del sistema/Herramientas y conceptos
+## Análisis del sistema y conceptos
 
 ## Diseño del sistema
 
