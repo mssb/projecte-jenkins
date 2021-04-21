@@ -1,13 +1,11 @@
 # Proyecto Jenkins
 
-<hr/>
-
 [![Jenkins photo][jenkins-photo]][jenkins-url]
 
-**Autores:**  Christian Manalo i Mark Santiago <br/>
-**Curso:** Administración de sistemas informáticos en redes
+**Autores:**  Christian Manalo y Mark Santiago  
+**Curso:** 2º de Administración de sistemas informáticos en redes
 
-<hr/>
+---
 
 # Índice
 
@@ -20,9 +18,11 @@
 - **[Conclusiones](#conclusiones)**
 - **[Bibliografía](#bibliografía)**
 
+
+---
 ## Estudio inicial
 
-El proyecto consistirá en el desarrollo de un sistema automatizado de entrega continua con **Jenkins**. El trabajo o "*job*" de Jenkins desplegará un repositorio git en un servidor y se evaluará el código proporcionado a través de **SonarQube**, el cual devolverá un feedback.
+El proyecto consistirá en el desarrollo de un sistema automatizado de entrega continua con **Jenkins**. El trabajo o "*job*" de Jenkins desplegará un repositorio **git** en un servidor y se evaluará el código proporcionado a través de **SonarQube**, el cual devolverá un feedback.
 
 ## Análisis del sistema y conceptos
 
@@ -37,6 +37,7 @@ El proyecto consistirá en el desarrollo de un sistema automatizado de entrega c
 ## Conclusiones
 
 ## Bibliografía
+
 
 
 [jenkins-photo]: images/Jenkins.png
