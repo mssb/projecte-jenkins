@@ -25,9 +25,9 @@
 - **[Estudio inicial](#estudio-inicial)**
 - **[Diseño del sistema](#diseño-del-sistema)**
 - **[Análisis del sistema y conceptos](#análisis-del-sistema-y-conceptos)**
-  - **[AWS](#aws)**
-  - **[Jenkins](#jenkins)**
-  - **[SonarQube](#sonarqube)**
+  - **[AWS](#que-es-aws)**
+  - **[Jenkins](#que-es-jenkins)**
+  - **[SonarQube](#que-es-sonarqube)**
 - **[Desarrollo](#desarrollo)**
 - **[Implantación](#implantación)**
 - **[Mantenimiento](#mantenimiento)**
@@ -50,11 +50,13 @@ El proyecto consistirá en el desarrollo de un sistema automatizado de entrega c
 
 ## Análisis del sistema y conceptos
 
-#### AWS
+#### Que es AWS?
+Amazon Web Services es una plataforma de servicios de nube que proporciona una variedad de servicios de infraestructura tales como almacenamiento, redes, bases de datos, servicios de aplicaciones, etc... los cuales permiten el crecimiento de las empresas. 
+
 
 <br><br><br>
 
-#### Jenkins
+#### Que es Jenkins?
 Es un servidor automatizado de integración continua de código abierto, es capaz de organizar una cadena de acciones que ayudan a lograr el proceso de integración continua de manera automatizada,  está completamente escrito en **Java**.
 
 Jenkins puede instalarse a través de un sistema de gestión de paquetes, Docker o incluso ejecutarse de forma independiente en cualquier máquina que tenga instalado Java Runtime Environment (JRE).
@@ -63,7 +65,7 @@ Las compañías de software pueden acelerar su proceso de desarrollo del código
 
 <br><br><br>
 
-### SonarQube
+#### Que es SonarQube? 
 Es una plataforma de software libre para evaluar la calidad de nuestro código, realizando un análisis estático sobre dicho código, con el objetivo de advertirnos sobre diferentes puntos a mejorar.
 
 Estos son los lenguajes soportados:
