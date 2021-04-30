@@ -15,7 +15,7 @@
 
 ### [Proyecto en Taiga](https://tree.taiga.io/project/isx47328890-projecte-jenkins/timeline)
 
-### [Servidor Jenkins](http://18.198.155.247:8080/)
+### [Servidor Jenkins](http://3.213.6.243:8080/)
 
 
 <br><br>
