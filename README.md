@@ -53,7 +53,7 @@ El sistema automatizado de entrega continua estara montado en tres contenedores 
 
 **Jenkins** cogerá los codigos de **Git** y contactará con Sonarqube para evaluarlos. **Sonarqube** tiene un servidor web para poder visualizar los escaneos.
 
-Dentro de **Postgressql** se guardaran los escaneos de código hechos por **Sonarqube**, y dentro de este tambien estara la configuración de la instancia Sonarqube.
+Dentro de **Postgressql** se guardaran los escaneos de código hechos por **Sonarqube**, y dentro de este tambien estara la configuración de la instancia del servidor web.
 
 <br><br>
 
