@@ -28,6 +28,7 @@
   - **[Jenkins](#que-es-jenkins)**
   - **[SonarQube](#que-es-sonarqube)**
 - **[Instalación](#instalación)**
+  - **[Docker Compose](#docker-compose)**
 - **[Implantación](#implantación)**
 - **[Mantenimiento](#mantenimiento)**
 - **[Conclusiones](#conclusiones)**
@@ -75,6 +76,135 @@ Estos son los lenguajes soportados:
 
 ## Instalación
 
+El proyecto estara montado en 3 dockers diferentes, uno para Jenkins, otro para Sonarqube y otro para Postrgessql. 
+
+
+
+### Docker Compose
+Para arrancar los dockers hemos hecho un docker-compose para que encienda todo lo necesario para que funcione.
+
+```
+docker-compose -f docker/Jenkins-Sonar/docker-compose.yaml up -d
+```
+
+El contenido de este docker-compose es lo siguiente:
+
+```
+version: "2"
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - "8080:8080"
+    networks:
+      - hisx2_net
+    volumes:
+      - jenkins-data:/var/jenkins_home
+  
+  sonarqube:
+    image: sonarqube:latest
+    depends_on:
+      - db
+      - jenkins
+    ports:
+      - "9000:9000"
+    networks:
+      - hisx2_net
+    environment:
+      - SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar
+      - SONAR_JDBC_USERNAME=sonar
+      - SONAR_JDBC_PASSWORD=sonar
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_temp:/opt/sonarqube/temp
+    
+  db:
+    image: postgres:latest
+    networks:
+      - hisx2_net
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+    volumes:
+      - postgresql:/var/lib/postgreql
+      - postgresql_data:/var/lib/postgresql/data
+
+networks:
+  hisx2_net:
+
+volumes:
+  jenkins-data:
+
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_temp:
+
+  postgresql:
+  postgresql_data:
+```
+
+Comprobamos que estan todas encendidas con `docker ps`.
+```
+CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS                               NAMES
+b21b62117152        sonarqube:latest      "bin/run.sh bin/sona…"   7 seconds ago       Up 6 seconds        0.0.0.0:9000->9000/tcp              jenkins-sonar_sonarqube_1
+f52323e5d55a        jenkins/jenkins:lts   "/sbin/tini -- /usr/…"   35 seconds ago      Up 7 seconds        0.0.0.0:8080->8080/tcp, 50000/tcp   jenkins-sonar_jenkins_1
+e6bb9a5763e8        postgres:latest       "docker-entrypoint.s…"   35 seconds ago      Up 31 seconds       5432/tcp                            jenkins-sonar_db_1
+
+```
+
+### Configuración Jenkins
+
+Desde el navegador accedemos en la siguiente URL y nos aparecerá la siguiente página:
+```
+http://localhost:8080
+```
+
+![Jenkins Admin Password photo][Jenkins-passwd]
+
+Para conseguir la contraseña tenemos dos opciones, entrar en el docker para hacer un `cat` del siguiente archivo `/var/jenkins_home/secrets/initialAdminPassword` o hacer un `docker logs`.
+
+```bash
+docker logs jenkins-sonar_jenkins_1
+```
+
+Solo debemos buscar la passwd, nos saldrá lo siguiente:
+```
+*************************************************************
+*************************************************************
+*************************************************************
+
+Jenkins initial setup is required. An admin user has been created and a password generated.
+Please use the following password to proceed to installation:
+
+87396ae5e3c449adb588f0401804924a
+
+This may also be found at: /var/jenkins_home/secrets/initialAdminPassword
+
+*************************************************************
+*************************************************************
+*************************************************************
+```
+
+Lo siguiente es instalar los plugins de Jenkins, podemos customizarlo a nuestro gusto o simplemente elegir `Install suggested plugins`. 
+
+Para que sea una instalación rapida elegiré `Install suggested plugins`.
+
+![Jenkins Custom photo][Jenkins-custom]
+
+Empezará a instalarse los plugins.
+
+![Jenkins Plugins photo][Jenkins-plugins]
+
+Lo siguiente nos pedirá la nueva contraseña del administrador, podemos poner lo que queramos.
+
+![Jenkins Custom Passwd photo][Jenkins-AdminPasswd]
+
+Y por último nos saldrá la configuracion del DNS, pero en nuestro caso lo dejaremos como está.
+
+![Jenkins URL photo][Jenkins-URL]
 ## Implantación
 
 ## Mantenimiento
@@ -90,4 +220,8 @@ Estos son los lenguajes soportados:
 [taiga-url]: https://tree.taiga.io/project/isx47328890-projecte-jenkins/timeline
 [system-photo]: img/system_photo.png
 [sonarqube-photo]: img/lenguajes_sonarqube.jpg
-
+[Jenkins-passwd]: img/ConfigJenkins/Jenkins_passwd.png
+[Jenkins-custom]: img/ConfigJenkins/CustomJenkins.png
+[Jenkins-plugins]: img/ConfigJenkins/InstallPlugins.png
+[Jenkins-AdminPasswd]: img/ConfigJenkins/AdminPasswd.png
+[Jenkins-URL]: img/ConfigJenkins/JenkinsURL.png
