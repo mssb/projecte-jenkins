@@ -29,6 +29,9 @@
   - **[SonarQube](#que-es-sonarqube)**
 - **[Instalación](#instalación)**
   - **[Docker Compose](#docker-compose)**
+  - **[Configuración Jenkins](#configuración-jenkins)**
+  - **[Configuración Sonarqube](#configuración-sonarqube)**
+  - **[Conectar Jenkins y Sonarqube](#conectar-jenkins-y-sonarqube)**
 - **[Implantación](#implantación)**
 - **[Mantenimiento](#mantenimiento)**
 - **[Conclusiones](#conclusiones)**
@@ -76,9 +79,16 @@ Estos son los lenguajes soportados:
 
 ## Instalación
 
-El proyecto estara montado en 3 dockers diferentes, uno para Jenkins, otro para Sonarqube y otro para Postrgessql. 
+El proyecto estara montado en 3 containers docker diferentes, uno para Jenkins, otro para Sonarqube y otro para Postrgessql. 
 
+Antes de arrancar los containers debemos establecer unos parametros para que el Sonarqube no esté limitado ya que utiliza `Elasticsearch`.
 
+```
+sysctl -w vm.max_map_count=262144
+sysctl -w fs.file-max=65536
+ulimit -n 65536
+ulimit -u 4096
+```
 
 ### Docker Compose
 Para arrancar los dockers hemos hecho un docker-compose para que encienda todo lo necesario para que funcione.
@@ -204,7 +214,39 @@ Lo siguiente nos pedirá la nueva contraseña del administrador, podemos poner l
 
 Y por último nos saldrá la configuracion del DNS, pero en nuestro caso lo dejaremos como está.
 
-![Jenkins URL photo][Jenkins-URL]
+![Jenkins URL photo][Jenkins-DNS]
+
+Finalizar instalación Jenkins.
+
+![Jenkins Ready photo][Jenkins-ready]
+
+### Configuración Sonarqube
+
+Desde el navegador accedemos en la siguiente URL y nos aparecerá la siguiente página:
+```
+http://localhost:9000
+```
+
+El usuario y la contraseña es `admin` ya que es la que está por defecto.
+
+![Sonarqube Admin Password photo][Sonarqube-admin]
+
+Nos pedirá en cambiar la contraseña por cuestiones de seguridad. Y la configuración ya estaria hecha.
+
+![Sonarqube Admin New Password photo][Sonarqube-newAdminPasswd]
+
+
+### Conectar Jenkins y Sonarqube
+
+Primero de todo debemos instalar el plugin de Sonarqube en Jenkins, para ello debemos ir a `Dashboard > Manage Jenkins > Manage Plugins`.
+
+![Jenkin Sonarqube Plugin Photo][Jenkins-SonarPlugin]
+
+
+Configurar la ruta Home de Sonarqube `Dashboard > Manage Jenkins > Global tool configuration > Sonarqube Scanner`
+
+![Jenkin Sonarqube Home Photo][Jenkins-SonarInstall]
+
 ## Implantación
 
 ## Mantenimiento
@@ -220,8 +262,15 @@ Y por último nos saldrá la configuracion del DNS, pero en nuestro caso lo deja
 [taiga-url]: https://tree.taiga.io/project/isx47328890-projecte-jenkins/timeline
 [system-photo]: img/system_photo.png
 [sonarqube-photo]: img/lenguajes_sonarqube.jpg
+
 [Jenkins-passwd]: img/ConfigJenkins/Jenkins_passwd.png
 [Jenkins-custom]: img/ConfigJenkins/CustomJenkins.png
 [Jenkins-plugins]: img/ConfigJenkins/InstallPlugins.png
 [Jenkins-AdminPasswd]: img/ConfigJenkins/AdminPasswd.png
-[Jenkins-URL]: img/ConfigJenkins/JenkinsURL.png
+[Jenkins-DNS]: img/ConfigJenkins/JenkinsURL.png
+[Jenkins-ready]: img/ConfigJenkins/JenkinsReady.png
+[Jenkins-SonarPlugin]: img/ConfigJenkins/SonarqubePlugins.png
+[Jenkins-SonarInstall]: img/ConfigJenkins/JenkinsSonarInstall.png
+
+[Sonarqube-admin]: img/ConfigSonarqube/SonarqubeAdmin.png
+[Sonarqube-newAdminPasswd]: img/ConfigSonarqube/Sonarqube_newPasswd.png
