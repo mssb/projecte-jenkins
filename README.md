@@ -246,7 +246,7 @@ Primero de todo debemos instalar el plugin de Sonarqube en Jenkins, para ello de
 Configurar la ruta Home de Sonarqube `Dashboard > Manage Jenkins > Global tool configuration > Sonarqube Scanner`. Pero antes debemos crear una carpeta dentro del container de jenkins.
 
 ```
-docker exec -it -u root jenkins-sonar_jenkins_1 mkdir /opt/sonarqube
+docker exec -it -u root jenkins-sonar_jenkins_1 mkdir -p /var/jenkins_home/tools/sonar-scanner
 ```
 
 ![Jenkin Sonarqube Home Photo][Jenkins-SonarInstall]
@@ -260,7 +260,7 @@ Dentro de Sonarqube `My Account > Security > Generate Token`.
 
 
 Ahora toca añadir el token dentro del servidor de Jenkins. `Manage Jenkins > Configure Systems > Sonarqube Servers`.
-En el apartado de `SonarQube servers` pulsamos en el icono de `Add`.  
+Pulsamos en el icono de `Add`.  
 
 ```
 Kind: Secret Text
