@@ -236,16 +236,46 @@ Nos pedirá en cambiar la contraseña por cuestiones de seguridad. Y la configur
 ![Sonarqube Admin New Password photo][Sonarqube-newAdminPasswd]
 
 
-### Conectar Jenkins y Sonarqube
+### Integración Jenkins y Sonarqube
 
 Primero de todo debemos instalar el plugin de Sonarqube en Jenkins, para ello debemos ir a `Dashboard > Manage Jenkins > Manage Plugins`.
 
 ![Jenkin Sonarqube Plugin Photo][Jenkins-SonarPlugin]
 
 
-Configurar la ruta Home de Sonarqube `Dashboard > Manage Jenkins > Global tool configuration > Sonarqube Scanner`
+Configurar la ruta Home de Sonarqube `Dashboard > Manage Jenkins > Global tool configuration > Sonarqube Scanner`. Pero antes debemos crear una carpeta dentro del container de jenkins.
+
+```
+docker exec -it -u root jenkins-sonar_jenkins_1 mkdir /opt/sonarqube
+```
 
 ![Jenkin Sonarqube Home Photo][Jenkins-SonarInstall]
+
+
+Para la integración de estos dos servidores se necesita un token de autenticación. Tenemos que asegurarnos de guardar el token ya que mas adelante lo necesitaremos.
+
+Dentro de Sonarqube `My Account > Security > Generate Token`.
+
+![Sonarqube Token Photo][Sonarqube-Token]
+
+
+Ahora toca añadir el token dentro del servidor de Jenkins. `Manage Jenkins > Configure Systems > Sonarqube Servers`. 
+
+```
+Kind: Secret Text
+Secret: token_generado_en_sonarqube
+Description: SonarQube Server
+```
+
+![Jenkins Token Integration Photo][Jenkins-Token]
+
+
+Seleccionar el authentication token `SonarQube Server`
+```
+Name: SonarQube
+Server URL: 
+```
+![Jenkins Token Integration Photo 2][Jenkins-Token2]
 
 ## Implantación
 
@@ -270,7 +300,11 @@ Configurar la ruta Home de Sonarqube `Dashboard > Manage Jenkins > Global tool c
 [Jenkins-DNS]: img/ConfigJenkins/JenkinsURL.png
 [Jenkins-ready]: img/ConfigJenkins/JenkinsReady.png
 [Jenkins-SonarPlugin]: img/ConfigJenkins/SonarqubePlugins.png
-[Jenkins-SonarInstall]: img/ConfigJenkins/JenkinsSonarInstall.png
+[Jenkins-SonarInstall]: img/ConfigJenkins/Jenkins_SonarqubeHomePath.png
+[Jenkins-Token]: img/ConfigJenkins/Jenkins-SonarToken.png
+[Jenkins-Token2]: img/ConfigJenkins/Jenkins-SonarToken2.png
+
 
 [Sonarqube-admin]: img/ConfigSonarqube/SonarqubeAdmin.png
 [Sonarqube-newAdminPasswd]: img/ConfigSonarqube/Sonarqube_newPasswd.png
+[Sonarqube-Token]: img/ConfigSonarqube/SonarqubeToken.png
