@@ -251,8 +251,24 @@ docker exec -it -u root jenkins-sonar_jenkins_1 mkdir -p /var/jenkins_home/tools
 
 ![Jenkin Sonarqube Home Photo][Jenkins-SonarInstall]
 
-Instalamos el sonar-scanner dentro del contenedor de Jenkins.
+Instalamos el sonar-scanner en del contenedor de Jenkins.
 
+Descargamos el archivo zip.
+```
+docker exec -it -u root jenkins-sonar_jenkins_1 wget -P /var/jenkins_home/ https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.1.2450-linux.zip
+
+```
+
+Descomprimimos el archivo en `/var/jenkins_home/tools/`.
+```
+docker exec -it -u root jenkins-sonar_jenkins_1 unzip /var/jenkins_home/sonar-scanner-cli-4.6.1.2450-linux.zip -d /var/jenkins_home/tools/
+```
+
+Movemos todos los archivos de `sonar-scanner-4.6.1.2450-linux` a `sonar-scanner`.
+```
+docker exec -it -u root jenkins-sonar_jenkins_1 mv /var/jenkins_home/tools/sonar-scanner-4.6.1.2450-linux/* /var/jenkins_home/tools/sonar-scanner/.
+
+```
 
 
 Para la integración de estos dos servidores se necesita un token de autenticación. Tenemos que asegurarnos de guardar el token ya que mas adelante lo necesitaremos.
