@@ -31,7 +31,7 @@
   - **[Docker Compose](#docker-compose)**
   - **[Configuración Jenkins](#configuración-jenkins)**
   - **[Configuración Sonarqube](#configuración-sonarqube)**
-  - **[Conectar Jenkins y Sonarqube](#conectar-jenkins-y-sonarqube)**
+  - **[Integración Jenkins y Sonarqube](#integración-jenkins-y-sonarqube)**
 - **[Implantación](#implantación)**
 - **[Mantenimiento](#mantenimiento)**
 - **[Conclusiones](#conclusiones)**
@@ -259,7 +259,8 @@ Dentro de Sonarqube `My Account > Security > Generate Token`.
 ![Sonarqube Token Photo][Sonarqube-Token]
 
 
-Ahora toca añadir el token dentro del servidor de Jenkins. `Manage Jenkins > Configure Systems > Sonarqube Servers`. 
+Ahora toca añadir el token dentro del servidor de Jenkins. `Manage Jenkins > Configure Systems > Sonarqube Servers`.
+En el apartado de `SonarQube servers` pulsamos en el icono de `Add`.  
 
 ```
 Kind: Secret Text
@@ -276,6 +277,13 @@ Name: SonarQube
 Server URL: 
 ```
 ![Jenkins Token Integration Photo 2][Jenkins-Token2]
+
+
+<br><br><br>
+
+### Pipelines
+
+
 
 ## Implantación
 
