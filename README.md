@@ -18,7 +18,7 @@
 ### [Servidor Jenkins](http://3.213.6.243:8080/)
 
 
-<br><br>
+---
 
 # Índice
 
@@ -37,19 +37,19 @@
 - **[Conclusiones](#conclusiones)**
 - **[Bibliografía](#bibliografía)**
 
-<br><br>
+---
 
 ## Estudio inicial
 
 El proyecto consistirá en el desarrollo de un sistema automatizado de entrega continua con **Jenkins**. El trabajo o "*job*" de Jenkins desplegará un repositorio **git** en un servidor y dentro de este proceso habrá diferentes etapas o "*stages*" de la cual cogerá los diferentes códigos del repositorio y será evaluada a través de **SonarQube** para saber la calidad del código, el cual devolverá un feedback.
 
-<br><br>
+---
 
 ## Diseño del sistema
 
 ![System photo][system-photo]
 
-<br><br>
+---
 
 ## Análisis del sistema y conceptos
 
@@ -77,6 +77,8 @@ Estos son los lenguajes soportados:
 
 ![Sonarqube photo][sonarqube-photo]
 
+---
+
 ## Instalación
 
 El proyecto estara montado en 3 containers docker diferentes, uno para Jenkins, otro para Sonarqube y otro para Postrgessql. 
@@ -93,13 +95,13 @@ ulimit -u 4096
 ### Docker Compose
 Para arrancar los dockers hemos hecho un docker-compose para que encienda todo lo necesario para que funcione.
 
-```
+```shell
 docker-compose -f docker/Jenkins-Sonar/docker-compose.yaml up -d
 ```
 
 El contenido de este docker-compose es lo siguiente:
 
-```
+```yaml
 version: "2"
 services:
   jenkins:
@@ -176,7 +178,7 @@ http://localhost:8080
 
 Para conseguir la contraseña tenemos dos opciones, entrar en el docker para hacer un `cat` del siguiente archivo `/var/jenkins_home/secrets/initialAdminPassword` o hacer un `docker logs`.
 
-```bash
+```shell
 docker logs jenkins-sonar_jenkins_1
 ```
 
@@ -297,20 +299,43 @@ Server URL:
 ```
 ![Jenkins Token Integration Photo 2][Jenkins-Token2]
 
+---
 
+### Parámetros de análisis de SonarQube
 
-<br><br><br>
+Existen diferentes maneras de configurar los parámetros. La jerarquía es la siguiente:  
 
+* **Propiedades globales**: Están definidas en la interfaz de usuario y se aplican a todos los proyectos. (Ir a `Administration > Configuration > General Settings`).  
+
+* **Propiedades del proyecto**: Están definidas en la interfaz de usuario y anulan las **propiedades globales** (A nivel del proyecto, ir a `Project Settings > General Settings`).  
+
+* **Parámetros de análisis del proyecto**: Están definidas en un fichero de configuración del análisis del proyecto o en un archivo de configuración de un scanner, anula los parámetros definidos en la UI.  
+
+* **Línea de comandos de un parámetro**: Están definidas cuando se ejecuta un análisis (con la opción `-D` en la línea de comandos), anula los parámetros de análisis del proyecto.  
+
+Solamente los parámetros de la UI se guardan en la base de datos. Por ejemplo, si sustituyes el parámetro `sonar.exclusions` a través de la línea de comandos, no se guardará en la base de datos.  
+
+En este proyecto utilizaremos los **parámetros de análisis del proyecto**, es decir un archivo de configuración, ya que estamos utilizando un scanner. 
+
+Nuestro archivo será el siguiente:
+
+```
+sonar.host.url=http://localhost:9000
+sonar.projectKey=Proyecto Jenkins
+sonar.projectName=Proyecto Jenkins
+sonar.login=admin-token
+sonar.language=
+```
 ### Pipelines
 
-
+---
 
 ## Implantación
-
+---
 ## Mantenimiento
-
+---
 ## Conclusiones
-
+---
 ## Bibliografía
 
 
