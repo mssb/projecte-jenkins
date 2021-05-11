@@ -317,15 +317,28 @@ Solamente los parámetros de la UI se guardan en la base de datos. Por ejemplo, 
 
 En este proyecto utilizaremos los **parámetros de análisis del proyecto**, es decir un archivo de configuración, ya que estamos utilizando un scanner. 
 
-Nuestro archivo será el siguiente:
+Nuestro archivo `sonar.properties` será el siguiente:
 
 ```
 sonar.host.url=http://localhost:9000
-sonar.projectKey=Proyecto Jenkins
-sonar.projectName=Proyecto Jenkins
-sonar.login=admin-token
-sonar.language=
+sonar.projectKey=Sonarqube project key
+sonar.projectName=Sonarqube project name
+sonar.login=sonarqube_user
+sonar.password=sonarqube_password
+sonar.sources=/var/jenkins_home/workspace/"job_name"
 ```
+
+Y esto lo introducimos dentro del contenedor de jenkins con un docker exec en el directorio `/var/jenkins_home/tools/sonar-scanner/conf`
+
+```
+docker exec -it -u root jenkins-sonar_jenkins_1 echo "sonar.host.url=http://localhost:9000 
+sonar.projectKey=Sonarqube project key 
+sonar.projectName=Sonarqube project name 
+sonar.login=sonarqube_user 
+sonar.password=sonarqube_password 
+sonar.sources=/var/jenkins_home/workspace/"job_name"" >> /var/jenkins_home/tools/sonar-scanner/conf/sonar-project.properties
+```
+
 ### Pipelines
 
 ---
