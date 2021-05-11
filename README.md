@@ -290,12 +290,13 @@ Description: SonarQube Server
 ![Jenkins Token Integration Photo][Jenkins-Token]
 
 
-Seleccionar el authentication token `SonarQube Server`
+Y por último seleccionar el Server authentication token `SonarQube Server`
 ```
 Name: SonarQube
 Server URL: 
 ```
 ![Jenkins Token Integration Photo 2][Jenkins-Token2]
+
 
 
 <br><br><br>
