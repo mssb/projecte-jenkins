@@ -61,7 +61,7 @@ Dentro de **Postgressql** se guardaran los escaneos de código hechos por **Sona
 
 <br><br>
 
-#### Que es Jenkins?
+#### ¿Qué es Jenkins?
 Es un servidor automatizado de integración continua de código abierto, es capaz de organizar una cadena de acciones que ayudan a lograr el proceso de integración continua de manera automatizada,  está completamente escrito en **Java**.
 
 Jenkins puede instalarse a través de un sistema de gestión de paquetes, Docker o incluso ejecutarse de forma independiente en cualquier máquina que tenga instalado Java Runtime Environment (JRE).
@@ -70,7 +70,7 @@ Las compañías de software pueden acelerar su proceso de desarrollo del código
 
 <br><br>
 
-#### Que es SonarQube? 
+#### ¿Qué es SonarQube? 
 Es una plataforma de software libre para evaluar la calidad de nuestro código, realizando un análisis estático sobre dicho código, con el objetivo de advertirnos sobre diferentes puntos a mejorar.
 
 Estos son los lenguajes soportados:
@@ -81,9 +81,9 @@ Estos son los lenguajes soportados:
 
 ## Instalación
 
-El proyecto estara montado en 3 containers docker diferentes, uno para Jenkins, otro para Sonarqube y otro para Postrgessql. 
+El proyecto estará montado en 3 containers docker diferentes, uno para Jenkins, otro para SonarQube y otro para PostgreSQL. 
 
-Antes de arrancar los containers debemos establecer unos parametros para que el Sonarqube no esté limitado ya que utiliza `Elasticsearch`.
+Antes de arrancar los containers debemos establecer unos parámetros para que el Sonarqube no esté limitado ya que utiliza `Elasticsearch`.
 
 ```
 sysctl -w vm.max_map_count=262144
@@ -328,7 +328,7 @@ sonar.password=sonarqube_password
 sonar.sources=/var/jenkins_home/workspace/"job_name"
 ```
 
-Y esto lo introducimos dentro del contenedor de jenkins con un docker exec en el directorio `/var/jenkins_home/tools/sonar-scanner/conf`
+Y esto lo introducimos dentro del contenedor de Jenkins con un docker exec en el directorio `/var/jenkins_home/tools/sonar-scanner/conf`
 
 ```
 docker exec -it -u root jenkins-sonar_jenkins_1 echo "sonar.host.url=http://localhost:9000 
@@ -339,7 +339,32 @@ sonar.password=sonarqube_password
 sonar.sources=/var/jenkins_home/workspace/"job_name"" >> /var/jenkins_home/tools/sonar-scanner/conf/sonar-project.properties
 ```
 
+
+
 ### Pipelines
+
+Hay diferentes maneras de crear los _jobs_:
+
+* **Freestyle project**
+* **Pipeline**
+* **Multi-configuration project**
+* **Folder**
+* **GitHub Organization**
+* **Multibranch Pipeline**
+
+En este proyecto nos centraremos en utilizar pipelines, porque tiene muchas ventajas como las siguientes:
+
+* **Código**: Los pipelines se implementan con código.
+* **Durabilidad**: Los pipelines pueden aguantar reinicios planeados o no planeados del controlador de Jenkins.
+* **Pausable**: Los pipelines pueden opcionalmente pausarse y esperar a un input humano o aprobación antes de continuar con el Pipeline.
+* **Versátil**: Los pipelines soportan requisitos de desarrollo continuo del mundo real bastante complejos, incluyendo la habilidad de bifurcar/unir, bucles, y trabajar en paralelo.
+* **Extensible**: El plugin Pipeline soporta extensions personalizadas y múltiples opcions para integrarse con otros plugins.
+
+En nuestro proyecto, hemos planteado dos formas de hacer el trabajo. Uno es, teniendo la lista de usuarios de Git, clonar los repositorios con un nombre en específico y después analizar todo el directorio de trabajo. La otra forma trata de un repositorio Git que contiene los directorios de cada respectivo alumno con su código, de manera que analiza directamente este repositorio.
+
+
+
+
 
 ---
 
