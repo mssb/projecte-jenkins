@@ -17,6 +17,8 @@
 
 ### [Servidor Jenkins](http://3.213.6.243:8080/)
 
+### [Servidor SonarQube](http://3.213.6.243:9000/)
+
 
 ---
 
@@ -41,7 +43,7 @@
 
 ## Estudio inicial
 
-El proyecto consistirá en el desarrollo de un sistema automatizado de entrega continua con **Jenkins**. El trabajo o "*job*" de Jenkins desplegará un repositorio **git** en un servidor y dentro de este proceso habrá diferentes etapas o "*stages*" de la cual cogerá los diferentes códigos del repositorio y será evaluada a través de **SonarQube** para saber la calidad del código, el cual devolverá un feedback.
+El proyecto consistirá en el desarrollo de un sistema automatizado de entrega continua con **Jenkins**. El trabajo o "*job*" de Jenkins desplegará un repositorio **Git** en un servidor y dentro de este proceso habrá diferentes etapas o "*stages*" de la cual cogerá los diferentes códigos del repositorio y será evaluada a través de **SonarQube** para saber la calidad del código, el cual devolverá un feedback.
 
 ---
 
@@ -53,11 +55,11 @@ El proyecto consistirá en el desarrollo de un sistema automatizado de entrega c
 
 ## Análisis del sistema y conceptos
 
-El sistema automatizado de entrega continua estara montado en tres contenedores docker de la cual será **Jenkins**, **Sonarqube** y **Postgressql**. 
+El sistema automatizado de entrega continua estara montado en tres contenedores docker de la cual será **Jenkins**, **Sonarqube** y **PostgreSQL**. 
 
-**Jenkins** cogerá los codigos de **Git** y contactará con Sonarqube para evaluarlos. **Sonarqube** tiene un servidor web para poder visualizar los escaneos.
+**Jenkins** clonará los codigos de **Git** y contactará con Sonarqube para evaluarlos. **Sonarqube** tiene un servidor web para poder visualizar los escaneos.
 
-Dentro de **Postgressql** se guardaran los escaneos de código hechos por **Sonarqube**, y dentro de este tambien estara la configuración de la instancia del servidor web.
+Dentro de **PostgreSQL** se guardaran los escaneos de código hechos por **Sonarqube**, y dentro de este tambien estara la configuración de la instancia del servidor web.
 
 <br><br>
 
@@ -68,6 +70,8 @@ Jenkins puede instalarse a través de un sistema de gestión de paquetes, Docker
 
 Las compañías de software pueden acelerar su proceso de desarrollo del código, ya que este puede automatizar, agilizar y aumentar el ritmo de toda la compilación y las pruebas de los proyectos.
 
+Más información sobre Jenkins [aquí](https://github.com/isx47328890/projecte-jenkins/docs/jenkins.md)
+
 <br><br>
 
 #### ¿Qué es SonarQube? 
@@ -76,6 +80,8 @@ Es una plataforma de software libre para evaluar la calidad de nuestro código, 
 Estos son los lenguajes soportados:
 
 ![Sonarqube photo][sonarqube-photo]
+
+Más información sobre SonarQube [aquí](https://github.com/isx47328890/projecte-jenkins/docs/sonarqube.md)
 
 ---
 
@@ -91,6 +97,10 @@ sysctl -w fs.file-max=65536
 ulimit -n 65536
 ulimit -u 4096
 ```
+
+### Docker
+
+Para instalar Docker y todos sus componentes acceder a este [enlace](https://docs.docker.com/engine/install/)
 
 ### Docker Compose
 Para arrancar los dockers hemos hecho un docker-compose para que encienda todo lo necesario para que funcione.
@@ -360,7 +370,6 @@ En este proyecto nos centraremos en utilizar pipelines, porque tiene muchas vent
 * **Versátil**: Los pipelines soportan requisitos de desarrollo continuo del mundo real bastante complejos, incluyendo la habilidad de bifurcar/unir, bucles, y trabajar en paralelo.
 * **Extensible**: El plugin Pipeline soporta extensions personalizadas y múltiples opcions para integrarse con otros plugins.
 
-En nuestro proyecto, hemos planteado dos formas de hacer el trabajo. Uno es, teniendo la lista de usuarios de Git, clonar los repositorios con un nombre en específico y después analizar todo el directorio de trabajo. La otra forma trata de un repositorio Git que contiene los directorios de cada respectivo alumno con su código, de manera que analiza directamente este repositorio.
 
 
 
