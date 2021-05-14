@@ -48,5 +48,20 @@ En este proyecto nos centraremos en utilizar pipelines, porque tiene muchas vent
 
 ### Pipeline
 
-**Jenkins Pipeline** o simplemente **Pipeline**  es un paquete de plugins que soporta la implementación e integración de pipelines de entrega continua en Jenkins. 
+**Jenkins Pipeline** o simplemente **Pipeline**  es un paquete de plugins que soporta la implementación e integración de _pipelines de entrega continua_ en Jenkins. 
 
+#### Ejemplo de pipeline
+
+```pipeline
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
+```

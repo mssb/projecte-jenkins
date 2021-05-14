@@ -311,48 +311,17 @@ Server URL:
 
 ---
 
-### Parámetros de análisis de SonarQube
-
-Existen diferentes maneras de configurar los parámetros. La jerarquía es la siguiente:  
-
-* **Propiedades globales**: Están definidas en la interfaz de usuario y se aplican a todos los proyectos. (Ir a `Administration > Configuration > General Settings`).  
-
-* **Propiedades del proyecto**: Están definidas en la interfaz de usuario y anulan las **propiedades globales** (A nivel del proyecto, ir a `Project Settings > General Settings`).  
-
-* **Parámetros de análisis del proyecto**: Están definidas en un fichero de configuración del análisis del proyecto o en un archivo de configuración de un scanner, anula los parámetros definidos en la UI.  
-
-* **Línea de comandos de un parámetro**: Están definidas cuando se ejecuta un análisis (con la opción `-D` en la línea de comandos), anula los parámetros de análisis del proyecto.  
-
-Solamente los parámetros de la UI se guardan en la base de datos. Por ejemplo, si sustituyes el parámetro `sonar.exclusions` a través de la línea de comandos, no se guardará en la base de datos.  
-
-En este proyecto utilizaremos los **parámetros de análisis del proyecto**, es decir un archivo de configuración, ya que estamos utilizando un scanner. 
-
-Nuestro archivo `sonar.properties` será el siguiente:
-
-```
-sonar.host.url=http://localhost:9000
-sonar.projectKey=Sonarqube project key
-sonar.projectName=Sonarqube project name
-sonar.login=sonarqube_user
-sonar.password=sonarqube_password
-sonar.sources=/var/jenkins_home/workspace/"job_name"
-```
-
-Y esto lo introducimos dentro del contenedor de Jenkins con un docker exec en el directorio `/var/jenkins_home/tools/sonar-scanner/conf`
-
-```
-docker exec -it -u root jenkins-sonar_jenkins_1 echo "sonar.host.url=http://localhost:9000 
-sonar.projectKey=Sonarqube project key 
-sonar.projectName=Sonarqube project name 
-sonar.login=sonarqube_user 
-sonar.password=sonarqube_password 
-sonar.sources=/var/jenkins_home/workspace/"job_name"" >> /var/jenkins_home/tools/sonar-scanner/conf/sonar-project.properties
-```
-
-
 ### Pipelines
 
+Ahora crearemos la tarea que consistirá en un pipeline. En la página principal accedemos a `New item`, como vemos en la imagen.
 
+![Jenkins New Item][Jenkins-newitem]
+
+A continuación, seleccionaremos el tipo de tarea que queremos. En este caso, utilizaremos un Pipeline como hemos comentado anteriormente.
+
+![Jenkins Job][Jenkins-job]
+
+Al seleccionarlo, nos enviará a la configuración de nuestro *job* y 
 
 
 
@@ -399,3 +368,5 @@ Otra de las cosas a tener en cuenta es añadir nuevos repositorios, para ello so
 [Sonarqube-admin]: img/ConfigSonarqube/SonarqubeAdmin.png
 [Sonarqube-newAdminPasswd]: img/ConfigSonarqube/Sonarqube_newPasswd.png
 [Sonarqube-Token]: img/ConfigSonarqube/SonarqubeToken.png
+[Jenkins-newitem]: img/Pipeline/Jenkins-newitem.png
+[Jenkins-job]: img/Pipeline/Jenkins-job.png
