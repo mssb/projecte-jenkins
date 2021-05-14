@@ -43,7 +43,7 @@
 
 ## Estudio inicial
 
-El proyecto consistirá en el desarrollo de un sistema automatizado de entrega continua con **Jenkins**. El trabajo o "*job*" de Jenkins desplegará un repositorio **Git** en un servidor y dentro de este proceso habrá diferentes etapas o "*stages*" de la cual cogerá los diferentes códigos del repositorio y será evaluada a través de **SonarQube** para saber la calidad del código, el cual devolverá un feedback.
+El proyecto consistirá en el desarrollo de un sistema automatizado de integración continua con **Jenkins**. El trabajo o "*job*" de Jenkins desplegará un repositorio **Git** en un servidor y dentro de este proceso habrá diferentes etapas o "*stages*" de la cual cogerá los diferentes códigos del repositorio y será evaluada a través de **SonarQube** para saber la calidad del código, el cual devolverá un feedback.
 
 ---
 
@@ -350,7 +350,6 @@ sonar.sources=/var/jenkins_home/workspace/"job_name"" >> /var/jenkins_home/tools
 ```
 
 
-
 ### Pipelines
 
 Hay diferentes maneras de crear los _jobs_:
@@ -376,10 +375,18 @@ En este proyecto nos centraremos en utilizar pipelines, porque tiene muchas vent
 
 
 ---
-
-## Implantación
----
 ## Mantenimiento
+
+Para el mantenimiento de este proyecto solo debemos que tener en cuenta las actualizaciones de las nuevas versiones de Jenkins.
+
+Para ello, antes de ejecutar el comando `docker-compose -f docker/Jenkins-Sonar/docker-compose.yaml up -d` debemos borrar la imagen Jenkins con el comando `docker rmi jenkins/jenkins:lts`, y despues ejecutar el comando de docker-compose y automaticamente se descargara la nueva imagen de jenkins.
+
+Tenemos que tener en cuenta que no perderemos la configuración ya que todo esta montado con volumenes y esto hará que no perdamos ningún dato.
+
+Otra de las cosas a tener en cuenta es añadir nuevos repositorios, para ello solo tenemos que editar la pipeline anteriormente mencionado.
+
+(poner pipeline e indicar para poner mas repositorios.)
+
 ---
 ## Conclusiones
 ---
