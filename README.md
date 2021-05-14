@@ -323,8 +323,8 @@ A continuación, seleccionaremos el tipo de tarea que queremos. En este caso, ut
 En la zona inferior de la página de configuración del pipeline podremos introducir nuestro script, el cual será el siguiente:
 
 ```java
-def users = "alumne1 alumne2 alumne3"
-def user = users.split(" ")
+def listusers = "alumne1 alumne2 alumne3"
+def user = listusers.split(" ")
 
 pipeline {
     agent any
@@ -337,7 +337,7 @@ pipeline {
                         if (!exists){
                             new File("${i}").mkdir()
                             dir ("${i}") {
-                            git url: "https://gitlab.com/2daw2020/${i}", poll: false
+                            git url: "https://gitlab.com/2daw2020/${i}"
                             }
                         }
                         else {
@@ -352,16 +352,16 @@ pipeline {
         }
         stage ('Analysis'){
             environment {
-                SCANNER_HOME = tool 'sonarqube'
+                SCANNER_HOME = tool 'SonarQube'
             }
             steps {
-                withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonarqube-token'){
+                withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'sonarqube-token'){
                     script {
                         for (i in user){
                             sh """
                                 ${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=${i} \
                                 -Dsonar.projectName=${i} \
-                                -Dsonar.sources=/var/jenkins_home/workspace/daw/${i} \
+                                -Dsonar.sources=/var/jenkins_home/workspace/${env.JOB_NAME}/${i} \
                                 -Dsonar.host.url=http://3.213.6.243:9000  \
                                 -Dsonar.scm.disabled=true
                             """                    

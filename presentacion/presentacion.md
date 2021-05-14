@@ -76,8 +76,8 @@ La CI/CD es un método para distribuir aplicaciones a los clientes mediante el u
 ### Pipeline Jenkins
 
 ```java
-def users = "alumne1 alumne2 alumne3"
-def user = users.split(" ")
+def listUsers = "alumne1 alumne2 alumne3"
+def user = listUsers.split(" ")
 
 pipeline {
     agent any
@@ -90,7 +90,7 @@ pipeline {
                         if (!exists){
                             new File("${i}").mkdir()
                             dir ("${i}") {
-                            git url: "https://gitlab.com/2daw2020/${i}", poll: false
+                            git url: "https://gitlab.com/2daw2020/${i}"
                             }
                         }
                         else {
@@ -114,7 +114,7 @@ pipeline {
                             sh """
                                 ${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=${i} \
                                 -Dsonar.projectName=${i} \
-                                -Dsonar.sources=/var/jenkins_home/workspace/daw/${i} \
+                                -Dsonar.sources=/var/jenkins_home/workspace/${env.JOB_NAME}/${i} \
                                 -Dsonar.host.url=http://3.213.6.243:9000  \
                                 -Dsonar.scm.disabled=true
                             """                    
