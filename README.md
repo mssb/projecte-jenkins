@@ -319,7 +319,11 @@ Ahora crearemos la tarea que consistirá en un pipeline. En la página principal
 
 A continuación, seleccionaremos el tipo de tarea que queremos. En este caso, utilizaremos un Pipeline como hemos comentado anteriormente.
 
-```
+![Jenkins Job][Jenkins-job]
+
+En la zona inferior de la página de configuración del pipeline podremos introducir nuestro script, el cual será el siguiente:
+
+```java
 def users = "alumne1 alumne2 alumne3"
 def listUsers = users.split(" ")
 
@@ -346,19 +350,19 @@ pipeline {
         // Analisis del repositorio
         stage ('Analysis'){
             environment {
-                SCANNER_HOME = tool 'sonarqube'
+                SCANNER_HOME = tool 'SonarQube'
             }
             // Propiedades Server Sonarqube
             steps {
-                withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonarqube-token'){
+                withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'sonarqube-token'){
                     script {
                         for (user in listUsers){
                             sh """
                                 ${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=${user} \
                                 -Dsonar.projectName=${user} \
-                                -Dsonar.sources=/var/jenkins_home/workspace/daw/${user} \
+                                -Dsonar.sources=/var/jenkins_home/workspace/nombre_del_proyecto/${user} \
                                 -Dsonar.css.node=. \
-                                -Dsonar.host.url=http://3.213.6.243:9000 \
+                                -Dsonar.host.url=http://url-del-sonar:9000 \
                             """                    
                         }
                     }                        
@@ -368,9 +372,11 @@ pipeline {
     }
 }
 ```
+Para ejecutar nuestro job, tendremos que darle a *apply* y después *save* y nos enviará a otra página para poder ejecutar nuestra tarea.  
 
-
-
+![Jenkins pipeline][Jenkins-pipeline]
+  
+![Jenkins estatus][Jenkins-estatus]
 
 
 ---
@@ -388,8 +394,18 @@ Otra de las cosas a tener en cuenta es añadir nuevos repositorios, para ello so
 
 ---
 ## Conclusiones
+
+Gracias a este proyecto facilitará el trabajo de aquellas personas que tienen que pasar horas corrigiendo un programa, con un solo botón podrá ver el resultado de evaluación de cada código.
+
 ---
 ## Bibliografía
+
+[Red-hat](https://www.redhat.com/es/topics/devops/what-is-ci-cd)
+[Jenkins](https://www.jenkins.io/doc/book/)
+[SonarQube](https://docs.sonarqube.org/latest/)
+[Docker installation](https://docs.docker.com/engine/install/ubuntu/)
+[Dockerhub SonarQube](https://hub.docker.com/_/sonarqube)
+[Jenkins pipeline](https://www.jenkins.io/doc/book/pipeline/)
 
 
 
@@ -416,3 +432,5 @@ Otra de las cosas a tener en cuenta es añadir nuevos repositorios, para ello so
 [Sonarqube-Token]: img/ConfigSonarqube/SonarqubeToken.png
 [Jenkins-newitem]: img/Pipeline/Jenkins-newitem.png
 [Jenkins-job]: img/Pipeline/Jenkins-job.png
+[Jenkins-estatus]: img/Pipeline/Jenkins-estatus.png
+[Jenkins-pipeline]: img/Pipeline/Jenkins-pipeline.png
