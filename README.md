@@ -34,7 +34,6 @@
   - **[Configuración Jenkins](#configuración-jenkins)**
   - **[Configuración Sonarqube](#configuración-sonarqube)**
   - **[Integración Jenkins y Sonarqube](#integración-jenkins-y-sonarqube)**
-- **[Implantación](#implantación)**
 - **[Mantenimiento](#mantenimiento)**
 - **[Conclusiones](#conclusiones)**
 - **[Bibliografía](#bibliografía)**
@@ -55,11 +54,11 @@ El proyecto consistirá en el desarrollo de un sistema automatizado de integraci
 
 ## Análisis del sistema y conceptos
 
-El sistema automatizado de entrega continua estara montado en tres contenedores docker de la cual será **Jenkins**, **Sonarqube** y **PostgreSQL**. 
+El sistema automatizado de entrega continua estará montado en tres contenedores Docker de las cuales serán **Jenkins**, **Sonarqube** y **PostgreSQL**. 
 
-**Jenkins** clonará los codigos de **Git** y contactará con Sonarqube para evaluarlos. **Sonarqube** tiene un servidor web para poder visualizar los escaneos.
+**Jenkins** clonará los códigos de **Git** y contactará con Sonarqube para evaluarlos. **Sonarqube** tiene un servidor web para poder visualizar los escaneos.
 
-Dentro de **PostgreSQL** se guardaran los escaneos de código hechos por **Sonarqube**, y dentro de este tambien estara la configuración de la instancia del servidor web.
+Dentro de **PostgreSQL** se guardaran los escaneos de código hechos por **Sonarqube**, y dentro de este también estará la configuración de la instancia del servidor web.
 
 <br><br>
 
@@ -87,7 +86,7 @@ Más información sobre SonarQube [aquí](https://github.com/isx47328890/project
 
 ## Instalación
 
-El proyecto estará montado en 3 containers docker diferentes, uno para Jenkins, otro para SonarQube y otro para PostgreSQL. 
+El proyecto estará montado en 3 containers Docker diferentes, uno para Jenkins, otro para SonarQube y otro para PostgreSQL. 
 
 Antes de arrancar los containers debemos establecer unos parámetros para que el Sonarqube no esté limitado ya que utiliza `Elasticsearch`.
 
@@ -103,13 +102,13 @@ ulimit -u 4096
 Para instalar Docker y todos sus componentes acceder a este [enlace](https://docs.docker.com/engine/install/)
 
 ### Docker Compose
-Para arrancar los dockers hemos hecho un docker-compose para que encienda todo lo necesario para que funcione.
+Para arrancar los contenedores utilizado la herramienta docker-compose para poner en marcha todo lo necesario para que funcione.
 
 ```shell
 docker-compose -f docker/Jenkins-Sonar/docker-compose.yaml up -d
 ```
 
-El contenido de este docker-compose es lo siguiente:
+El contenido de este `docker-compose.yaml` es el siguiente:
 
 ```yaml
 version: "2"
@@ -186,13 +185,13 @@ http://localhost:8080
 
 ![Jenkins Admin Password photo][Jenkins-passwd]
 
-Para conseguir la contraseña tenemos dos opciones, entrar en el docker para hacer un `cat` del siguiente archivo `/var/jenkins_home/secrets/initialAdminPassword` o hacer un `docker logs`.
+Para conseguir la contraseña tenemos dos opciones, entrar en el contenedor para hacer un `cat` del siguiente archivo `/var/jenkins_home/secrets/initialAdminPassword` o hacer un `docker logs`.
 
 ```shell
 docker logs jenkins-sonar_jenkins_1
 ```
 
-Solo debemos buscar la passwd, nos saldrá lo siguiente:
+Solo debemos buscar la password, nos saldrá lo siguiente:
 ```
 *************************************************************
 *************************************************************
@@ -325,44 +324,46 @@ En la zona inferior de la página de configuración del pipeline podremos introd
 
 ```java
 def users = "alumne1 alumne2 alumne3"
-def listUsers = users.split(" ")
+def user = users.split(" ")
 
 pipeline {
     agent any
     stages {
-        // Clonación de repositorio
         stage ('Clone repositories'){
             steps {
                 script {
-                    for (user in listUsers) {
-                        sh """
-                            if [ -d ${user} ]; then
-                                cd ${user}
-                                git pull
-                            else
-                                git clone https://gitlab.com/2daw2020/${user}.git ${user}/
-                            fi
-                        """
+                    for (i in user) {
+                        def exists = fileExists "${i}"
+                        if (!exists){
+                            new File("${i}").mkdir()
+                            dir ("${i}") {
+                            git url: "https://gitlab.com/2daw2020/${i}", poll: false
+                            }
+                        }
+                        else {
+                            dir ("${i}"){
+                                sh "git pull origin master"
+                            }
+                        }
+
                     }
                 }
             }
         }
-        // Analisis del repositorio
         stage ('Analysis'){
             environment {
-                SCANNER_HOME = tool 'SonarQube'
+                SCANNER_HOME = tool 'sonarqube'
             }
-            // Propiedades Server Sonarqube
             steps {
-                withSonarQubeEnv(installationName: 'SonarQube', credentialsId: 'sonarqube-token'){
+                withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonarqube-token'){
                     script {
-                        for (user in listUsers){
+                        for (i in user){
                             sh """
-                                ${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=${user} \
-                                -Dsonar.projectName=${user} \
-                                -Dsonar.sources=/var/jenkins_home/workspace/nombre_del_proyecto/${user} \
-                                -Dsonar.css.node=. \
-                                -Dsonar.host.url=http://url-del-sonar:9000 \
+                                ${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=${i} \
+                                -Dsonar.projectName=${i} \
+                                -Dsonar.sources=/var/jenkins_home/workspace/daw/${i} \
+                                -Dsonar.host.url=http://3.213.6.243:9000  \
+                                -Dsonar.scm.disabled=true
                             """                    
                         }
                     }                        
@@ -374,9 +375,17 @@ pipeline {
 ```
 Para ejecutar nuestro job, tendremos que darle a *apply* y después *save* y nos enviará a otra página para poder ejecutar nuestra tarea.  
 
-![Jenkins pipeline][Jenkins-pipeline]
+![Jenkins pipeline][Jenkins-pipeline]  
   
 ![Jenkins estatus][Jenkins-estatus]
+
+El botón `Build Now` inicia la tarea, nos saldrá un estado de nuestra *build* en la misma página.
+
+![Jenkins build][Jenkins-build]
+
+Después de ver que se ha completado nuestra *build*, podemos acceder a nuestra página de SonarQube.
+
+![Sonarqube projects][Sonar-projects]
 
 
 ---
@@ -388,14 +397,12 @@ Para ello, antes de ejecutar el comando `docker-compose -f docker/Jenkins-Sonar/
 
 Tenemos que tener en cuenta que no perderemos la configuración ya que todo esta montado con volumenes y esto hará que no perdamos ningún dato.
 
-Otra de las cosas a tener en cuenta es añadir nuevos repositorios, para ello solo tenemos que editar la pipeline anteriormente mencionado.
-
-(poner pipeline e indicar para poner mas repositorios.)
+Otra de las cosas a tener en cuenta es a la hora de añadir nuevos repositorios, para ello solamente tenemos que editar el Pipeline anteriormente mencionado.
 
 ---
 ## Conclusiones
 
-Gracias a este proyecto facilitará el trabajo de aquellas personas que tienen que pasar horas corrigiendo un programa, con un solo botón podrá ver el resultado de evaluación de cada código.
+Gracias a este proyecto se facilitará el trabajo de personas que tienen que pasar horas corrigiendo un programa, con un solo botón se podrá ver el resultado de evaluación de cada código.
 
 ---
 ## Bibliografía
@@ -426,11 +433,13 @@ Gracias a este proyecto facilitará el trabajo de aquellas personas que tienen q
 [Jenkins-Token]: img/ConfigJenkins/Jenkins-SonarToken.png
 [Jenkins-Token2]: img/ConfigJenkins/Jenkins-SonarToken2.png
 
-
 [Sonarqube-admin]: img/ConfigSonarqube/SonarqubeAdmin.png
 [Sonarqube-newAdminPasswd]: img/ConfigSonarqube/Sonarqube_newPasswd.png
 [Sonarqube-Token]: img/ConfigSonarqube/SonarqubeToken.png
+
 [Jenkins-newitem]: img/Pipeline/Jenkins-newitem.png
 [Jenkins-job]: img/Pipeline/Jenkins-job.png
 [Jenkins-estatus]: img/Pipeline/Jenkins-estatus.png
 [Jenkins-pipeline]: img/Pipeline/Jenkins-pipeline.png
+[Jenkins-build]: img/Pipeline/Jenkins-build.png
+[Sonar-projects]: img/Pipeline/Sonar-projects.png

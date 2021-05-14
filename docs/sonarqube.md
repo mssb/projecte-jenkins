@@ -6,7 +6,7 @@ SonarQube es una herramienta de revisión automática de código para detectar b
 
 ## SonarScanner
 
-SonarScanner es el escáner que se utiliza cuando no hay un escáner específico en el sistema.
+SonarScanner es el escáner que se utiliza cuando no hay un escáner específico en el sistema. En este caso, nosotros lo instalamos dentro del contenedor de Jenkins.
 
 ### Parámetros de análisis de SonarQube
 
@@ -22,4 +22,3 @@ Existen diferentes maneras de configurar los parámetros. La jerarquía es la si
 
 Solamente los parámetros de la UI se guardan en la base de datos. Por ejemplo, si sustituyes el parámetro `sonar.exclusions` a través de la línea de comandos, no se guardará en la base de datos.  
 
-En este proyecto utilizaremos los **parámetros de análisis del proyecto**, es decir un archivo de configuración, ya que estamos utilizando un scanner. 

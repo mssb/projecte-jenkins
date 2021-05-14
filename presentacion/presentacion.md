@@ -77,44 +77,46 @@ La CI/CD es un método para distribuir aplicaciones a los clientes mediante el u
 
 ```java
 def users = "alumne1 alumne2 alumne3"
-def listUsers = users.split(" ")
+def user = users.split(" ")
 
 pipeline {
     agent any
     stages {
-        // Clonación de repositorio
         stage ('Clone repositories'){
             steps {
                 script {
-                    for (user in listUsers) {
-                        sh """
-                            if [ -d ${user} ]; then
-                                cd ${user}
-                                git pull
-                            else
-                                git clone https://gitlab.com/2daw2020/${user}.git ${user}/
-                            fi
-                        """
+                    for (i in user) {
+                        def exists = fileExists "${i}"
+                        if (!exists){
+                            new File("${i}").mkdir()
+                            dir ("${i}") {
+                            git url: "https://gitlab.com/2daw2020/${i}", poll: false
+                            }
+                        }
+                        else {
+                            dir ("${i}"){
+                                sh "git pull origin master"
+                            }
+                        }
+
                     }
                 }
             }
         }
-        // Analisis del repositorio
         stage ('Analysis'){
             environment {
                 SCANNER_HOME = tool 'sonarqube'
             }
-            // Propiedades Server Sonarqube
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonarqube-token'){
                     script {
-                        for (user in listUsers){
+                        for (i in user){
                             sh """
-                                ${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=${user} \
-                                -Dsonar.projectName=${user} \
-                                -Dsonar.sources=/var/jenkins_home/workspace/daw/${user} \
-                                -Dsonar.css.node=. \
-                                -Dsonar.host.url=http://3.213.6.243:9000 \
+                                ${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=${i} \
+                                -Dsonar.projectName=${i} \
+                                -Dsonar.sources=/var/jenkins_home/workspace/daw/${i} \
+                                -Dsonar.host.url=http://3.213.6.243:9000  \
+                                -Dsonar.scm.disabled=true
                             """                    
                         }
                     }                        
