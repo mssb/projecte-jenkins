@@ -75,7 +75,7 @@ La CI/CD es un método para distribuir aplicaciones a los clientes mediante el u
 
 ### Pipeline Jenkins
 
-```
+```java
 def users = "alumne1 alumne2 alumne3"
 def listUsers = users.split(" ")
 
@@ -125,10 +125,6 @@ pipeline {
 }
 ```
 
----
-
-### Parametros de Sonar
----
 
 ### Mantenimiento
 - **Actualización de la imagen jenkins**
@@ -137,9 +133,16 @@ pipeline {
 ---
 
 ### Cosas a mejorar
+- **Output Mail**
+- **Detectar los commits y se ejecute automáticamente**
+- **Detectar plagios**
 
 ---
 
 ### Conclusiones
 
 ---
+
+## FIN
+
+Gracias por vuestra atención!
