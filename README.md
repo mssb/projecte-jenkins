@@ -352,22 +352,6 @@ sonar.sources=/var/jenkins_home/workspace/"job_name"" >> /var/jenkins_home/tools
 
 ### Pipelines
 
-Hay diferentes maneras de crear los _jobs_:
-
-* **Freestyle project**
-* **Pipeline**
-* **Multi-configuration project**
-* **Folder**
-* **GitHub Organization**
-* **Multibranch Pipeline**
-
-En este proyecto nos centraremos en utilizar pipelines, porque tiene muchas ventajas como las siguientes:
-
-* **Código**: Los pipelines se implementan con código.
-* **Durabilidad**: Los pipelines pueden aguantar reinicios planeados o no planeados del controlador de Jenkins.
-* **Pausable**: Los pipelines pueden opcionalmente pausarse y esperar a un input humano o aprobación antes de continuar con el Pipeline.
-* **Versátil**: Los pipelines soportan requisitos de desarrollo continuo del mundo real bastante complejos, incluyendo la habilidad de bifurcar/unir, bucles, y trabajar en paralelo.
-* **Extensible**: El plugin Pipeline soporta extensions personalizadas y múltiples opcions para integrarse con otros plugins.
 
 
 
