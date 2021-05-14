@@ -352,7 +352,55 @@ sonar.sources=/var/jenkins_home/workspace/"job_name"" >> /var/jenkins_home/tools
 
 ### Pipelines
 
+```
+def users = "alumne1 alumne2 alumne3"
+def listUsers = users.split(" ")
 
+pipeline {
+    agent any
+    stages {
+        // Clonación de repositorio
+        stage ('Clone repositories'){
+            steps {
+                script {
+                    for (user in listUsers) {
+                        sh """
+                            if [ -d ${user} ]; then
+                                cd ${user}
+                                git pull
+                            else
+                                git clone https://gitlab.com/2daw2020/${user}.git ${user}/
+                            fi
+                        """
+                    }
+                }
+            }
+        }
+        // Analisis del repositorio
+        stage ('Analysis'){
+            environment {
+                SCANNER_HOME = tool 'sonarqube'
+            }
+            // Propiedades Server Sonarqube
+            steps {
+                withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonarqube-token'){
+                    script {
+                        for (user in listUsers){
+                            sh """
+                                ${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=${user} \
+                                -Dsonar.projectName=${user} \
+                                -Dsonar.sources=/var/jenkins_home/workspace/daw/${user} \
+                                -Dsonar.css.node=. \
+                                -Dsonar.host.url=http://3.213.6.243:9000 \
+                            """                    
+                        }
+                    }                        
+                }
+            }
+        }
+    }
+}
+```
 
 
 
