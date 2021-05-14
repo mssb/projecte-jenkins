@@ -27,8 +27,8 @@
 - **[Estudio inicial](#estudio-inicial)**
 - **[Diseño del sistema](#diseño-del-sistema)**
 - **[Análisis del sistema y conceptos](#análisis-del-sistema-y-conceptos)**
-  - **[Jenkins](#que-es-jenkins)**
-  - **[SonarQube](#que-es-sonarqube)**
+  - **[Jenkins](#qué-es-jenkins)**
+  - **[SonarQube](#qué-es-sonarqube)**
 - **[Instalación](#instalación)**
   - **[Docker Compose](#docker-compose)**
   - **[Configuración Jenkins](#configuración-jenkins)**
@@ -43,7 +43,7 @@
 
 ## Estudio inicial
 
-El proyecto consistirá en el desarrollo de un sistema automatizado de integración continua con **Jenkins**. El trabajo o "*job*" de Jenkins desplegará un repositorio **Git** en un servidor y dentro de este proceso habrá diferentes etapas o "*stages*" de la cual cogerá los diferentes códigos del repositorio y será evaluada a través de **SonarQube** para saber la calidad del código, el cual devolverá un feedback.
+El proyecto consistirá en el desarrollo de un sistema automatizado de integración continua con **Jenkins**. La tarea o "*job*" de Jenkins desplegará un repositorio **Git** en un servidor y dentro de este proceso habrá diferentes etapas o "*stages*" de la cual cogerá los diferentes códigos del repositorio y será evaluada a través de **SonarQube** para saber la calidad del código, el cual devolverá un feedback.
 
 ---
 
