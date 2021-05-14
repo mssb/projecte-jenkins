@@ -70,7 +70,7 @@ Jenkins puede instalarse a través de un sistema de gestión de paquetes, Docker
 
 Las compañías de software pueden acelerar su proceso de desarrollo del código, ya que este puede automatizar, agilizar y aumentar el ritmo de toda la compilación y las pruebas de los proyectos.
 
-Más información sobre Jenkins [aquí](https://github.com/isx47328890/projecte-jenkins/docs/jenkins.md)
+Más información sobre Jenkins [aquí](https://github.com/isx47328890/projecte-jenkins/blob/main/docs/jenkins.md)
 
 <br><br>
 
@@ -81,7 +81,7 @@ Estos son los lenguajes soportados:
 
 ![Sonarqube photo][sonarqube-photo]
 
-Más información sobre SonarQube [aquí](https://github.com/isx47328890/projecte-jenkins/docs/sonarqube.md)
+Más información sobre SonarQube [aquí](https://github.com/isx47328890/projecte-jenkins/blob/main/docs/sonarqube.md)
 
 ---
 
