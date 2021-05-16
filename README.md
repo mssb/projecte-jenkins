@@ -408,10 +408,15 @@ Gracias a este proyecto facilitará el trabajo de personas que tienen que pasar 
 ## Bibliografía
 
 [Red-hat](https://www.redhat.com/es/topics/devops/what-is-ci-cd)
+
 [Jenkins](https://www.jenkins.io/doc/book/)
+
 [SonarQube](https://docs.sonarqube.org/latest/)
+
 [Docker installation](https://docs.docker.com/engine/install/ubuntu/)
+
 [Dockerhub SonarQube](https://hub.docker.com/_/sonarqube)
+
 [Jenkins pipeline](https://www.jenkins.io/doc/book/pipeline/)
 
 
