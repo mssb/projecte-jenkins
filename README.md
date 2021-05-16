@@ -402,7 +402,7 @@ Otra de las cosas a tener en cuenta es a la hora de añadir nuevos repositorios,
 ---
 ## Conclusiones
 
-Gracias a este proyecto se facilitará el trabajo de personas que tienen que pasar horas corrigiendo un programa, con un solo botón se podrá ver el resultado de evaluación de cada código.
+Gracias a este proyecto facilitará el trabajo de personas que tienen que pasar horas corrigiendo un programa, con un solo botón se podrá ver el resultado de evaluación de cada código y verán que puntos pueden mejorar.
 
 ---
 ## Bibliografía
