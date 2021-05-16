@@ -2,7 +2,7 @@
 
 [![Jenkins photo][jenkins-photo]][jenkins-url]
 
-<br><br>
+<br><br> 
 
 **Autores:**  Christian Manalo y Mark Santiago  
 
@@ -27,8 +27,8 @@
 - **[Estudio inicial](#estudio-inicial)**
 - **[Diseño del sistema](#diseño-del-sistema)**
 - **[Análisis del sistema y conceptos](#análisis-del-sistema-y-conceptos)**
-  - **[Jenkins](#qué-es-jenkins)**
-  - **[SonarQube](#qué-es-sonarqube)**
+  - **[Jenkins](#qué-es-jenkins-?)**
+  - **[SonarQube](#qué-es-sonarqube-?)**
 - **[Instalación](#instalación)**
   - **[Docker Compose](#docker-compose)**
   - **[Configuración Jenkins](#configuración-jenkins)**
@@ -62,7 +62,7 @@ Dentro de **PostgreSQL** se guardaran los escaneos de código hechos por **Sonar
 
 <br><br>
 
-#### ¿Qué es Jenkins?
+#### Qué es Jenkins?
 Es un servidor automatizado de integración continua de código abierto, es capaz de organizar una cadena de acciones que ayudan a lograr el proceso de integración continua de manera automatizada,  está completamente escrito en **Java**.
 
 Jenkins puede instalarse a través de un sistema de gestión de paquetes, Docker o incluso ejecutarse de forma independiente en cualquier máquina que tenga instalado Java Runtime Environment (JRE).
@@ -73,7 +73,7 @@ Más información sobre Jenkins [aquí](https://github.com/isx47328890/projecte-
 
 <br><br>
 
-#### ¿Qué es SonarQube? 
+#### Qué es SonarQube? 
 Es una plataforma de software libre para evaluar la calidad de nuestro código, realizando un análisis estático sobre dicho código, con el objetivo de advertirnos sobre diferentes puntos a mejorar.
 
 Estos son los lenguajes soportados:
