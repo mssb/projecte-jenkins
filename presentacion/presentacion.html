@@ -321,8 +321,85 @@ pre[data-line] .line-highlight[data-end]:after {
 <hr>
 <h2 class="mume-header" id="instalaci%C3%B3n">Instalaci&#xF3;n</h2>
 
-<p>Documentaci&#xF3;n para la instalaci&#xF3;n <a href="https://github.com/isx47328890/projecte-jenkins/blob/main/README.md#instalaci%C3%B3n">aqu&#xED;</a></p>
-<h2 class="mume-header" id="mantenimiento">Mantenimiento</h2>
+<p><img src="../img/ConfigJenkins/Jenkins_passwd.png" alt="Jenkins-password"></p>
+<pre data-role="codeBlock" data-info class="language-"><code>*************************************************************
+*************************************************************
+*************************************************************
+
+Jenkins initial setup is required. An admin user has been created and a password generated.
+Please use the following password to proceed to installation:
+
+87396ae5e3c449adb588f0401804924a
+
+This may also be found at: /var/jenkins_home/secrets/initialAdminPassword
+
+*************************************************************
+*************************************************************
+*************************************************************
+</code></pre><p><img src="../img/ConfigSonarqube/SonarqubeAdmin.png" alt="SonarQube-login"></p>
+<hr>
+<p><img src="../img/ConfigSonarqube/Sonarqube_newPasswd.png" alt="SonarQube-password"></p>
+<hr>
+<p><img src="../img/ConfigJenkins/SonarqubePlugins.png" alt="Jenkins-plugin"></p>
+<hr>
+<p><img src="../img/ConfigJenkins/Jenkins_SonarqubeHomePath.png" alt="Jenkins-Sonar"></p>
+<hr>
+<p><img src="../img/ConfigSonarqube/SonarqubeToken.png" alt="Sonar-token"></p>
+<hr>
+<p><img src="../img/ConfigJenkins/Jenkins-SonarToken.png" alt="Jenkins-token"></p>
+<hr>
+<p><img src="../img/ConfigJenkins/Jenkins-SonarToken2.png" alt="Jenkins-Sonarqube"></p>
+<h3 class="mume-header" id="pipeline">Pipeline</h3>
+
+<pre data-role="codeBlock" data-info="java" class="language-java">def listusers <span class="token operator">=</span> <span class="token string">&quot;alumne1 alumne2 alumne3&quot;</span>
+def user <span class="token operator">=</span> listusers<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">&quot; &quot;</span><span class="token punctuation">)</span>
+
+pipeline <span class="token punctuation">{</span>
+    agent any
+    stages <span class="token punctuation">{</span>
+        stage <span class="token punctuation">(</span><span class="token string">&apos;Clone repositories&apos;</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            steps <span class="token punctuation">{</span>
+                script <span class="token punctuation">{</span>
+                    <span class="token keyword">for</span> <span class="token punctuation">(</span>i in user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        def exists <span class="token operator">=</span> fileExists <span class="token string">&quot;${i}&quot;</span>
+                        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>exists<span class="token punctuation">)</span><span class="token punctuation">{</span>
+                            <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">&quot;${i}&quot;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">mkdir</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                            dir <span class="token punctuation">(</span><span class="token string">&quot;${i}&quot;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                            git url<span class="token operator">:</span> <span class="token string">&quot;https://gitlab.com/2daw2020/${i}&quot;</span>
+                            <span class="token punctuation">}</span>
+                        <span class="token punctuation">}</span>
+                        <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                            dir <span class="token punctuation">(</span><span class="token string">&quot;${i}&quot;</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                                sh <span class="token string">&quot;git pull origin master&quot;</span>
+                            <span class="token punctuation">}</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        stage <span class="token punctuation">(</span><span class="token string">&apos;Analysis&apos;</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            environment <span class="token punctuation">{</span>
+                SCANNER_HOME <span class="token operator">=</span> tool <span class="token string">&apos;SonarQube&apos;</span>
+            <span class="token punctuation">}</span>
+            steps <span class="token punctuation">{</span>
+                <span class="token function">withSonarQubeEnv</span><span class="token punctuation">(</span>installationName<span class="token operator">:</span> <span class="token string">&apos;SonarQube&apos;</span><span class="token punctuation">,</span> credentialsId<span class="token operator">:</span> <span class="token string">&apos;sonarqube-token&apos;</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                    script <span class="token punctuation">{</span>
+                        <span class="token keyword">for</span> <span class="token punctuation">(</span>i in user<span class="token punctuation">)</span><span class="token punctuation">{</span>
+                            sh <span class="token string">&quot;&quot;</span>&quot;
+                                $<span class="token punctuation">{</span>SCANNER_HOME<span class="token punctuation">}</span><span class="token operator">/</span>bin<span class="token operator">/</span>sonar<span class="token operator">-</span>scanner <span class="token operator">-</span><span class="token class-name">Dsonar</span><span class="token punctuation">.</span>projectKey<span class="token operator">=</span>$<span class="token punctuation">{</span>i<span class="token punctuation">}</span> \
+                                <span class="token operator">-</span><span class="token class-name">Dsonar</span><span class="token punctuation">.</span>projectName<span class="token operator">=</span>$<span class="token punctuation">{</span>i<span class="token punctuation">}</span> \
+                                <span class="token operator">-</span><span class="token class-name">Dsonar</span><span class="token punctuation">.</span>sources<span class="token operator">=</span><span class="token operator">/</span><span class="token keyword">var</span><span class="token operator">/</span>jenkins_home<span class="token operator">/</span>workspace<span class="token operator">/</span>$<span class="token punctuation">{</span>env<span class="token punctuation">.</span>JOB_NAME<span class="token punctuation">}</span><span class="token operator">/</span>$<span class="token punctuation">{</span>i<span class="token punctuation">}</span> \
+                                <span class="token operator">-</span><span class="token class-name">Dsonar</span><span class="token punctuation">.</span>host<span class="token punctuation">.</span>url<span class="token operator">=</span>http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">3.213</span><span class="token number">.6</span><span class="token number">.243</span><span class="token operator">:</span><span class="token number">9000</span>  \
+                                <span class="token operator">-</span><span class="token class-name">Dsonar</span><span class="token punctuation">.</span>scm<span class="token punctuation">.</span>disabled<span class="token operator">=</span><span class="token boolean">true</span>
+                            <span class="token string">&quot;&quot;</span>&quot;                    
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span>                        
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</pre><h2 class="mume-header" id="mantenimiento">Mantenimiento</h2>
 
 <ul>
 <li><strong>Actualizaci&#xF3;n de la imagen jenkins</strong></li>
